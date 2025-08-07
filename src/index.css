@@ -1,0 +1,925 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* 기본 컨테이너 */
+.container {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* 글래스 카드 */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  padding: 1.2rem;
+}
+
+/* 버튼 스타일 */
+.btn {
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.7rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a202c;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 질문 옵션 */
+.option {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 0.4rem 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+  color: #1a202c;
+  font-size: 0.9rem;
+}
+
+.option.selected {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #2d3748;
+}
+
+/* 프로그레스 바 */
+.progress-container {
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+}
+
+.progress-info {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* 텍스트 스타일 */
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+.question-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+/* 레이아웃 */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+/* 결과 페이지 스타일 */
+.result-header {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.result-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.result-date {
+  font-size: 1rem;
+  opacity: 0.9;
+  color: white;
+  font-weight: 400;
+}
+
+/* 결과 액션 버튼들 */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.78rem;
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.action-row .btn {
+  width: 100%;
+  justify-content: center;
+  flex: 1;
+}
+
+/* 결과 페이지용 글래스 카드 */
+.result-page .glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+/* 결과 페이지용 버튼 */
+.result-page .btn-primary {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 할일 섹션 스타일 */
+.tasks-section {
+  margin-bottom: 1rem;
+}
+
+.tasks-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.task-icon {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.task-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: white;
+}
+
+/* 캘린더 페이지 스타일 */
+.calendar-container {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.calendar-page-container {
+  max-width: 800px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.calendar-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.calendar-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.calendar-layout-single {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.month-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.month-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.nav-button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #1a202c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.weekday-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.weekday-cell {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border: none;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #1a202c;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.calendar-day:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day.today {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.calendar-day.other-month {
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.calendar-day.has-mood {
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.entry-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.close-button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-preview {
+  padding: 1rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.mood-preview-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.empty-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+.empty-message {
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* 음악 추천 컴포넌트 스타일 */
+.music-recommendation {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+
+.music-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.music-cover {
+  width: 65px;
+  height: 65px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.music-emoji {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.music-info {
+  flex: 1;
+}
+
+.music-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.music-description {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.music-tracks {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 1.5rem;
+}
+
+.tracks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.track-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.track-info {
+  flex: 1;
+}
+
+.track-name {
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.track-artist {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  color: white;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 감성 문구 컴포넌트 스타일 */
+.inspirational-quote {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+
+.quote-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.quote-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.quote-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.quote-actions button {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.quote-content {
+  margin-bottom: 1.5rem;
+}
+
+.quote-text {
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: white;
+  margin-bottom: 1rem;
+  text-align: center;
+  white-space: pre-line;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  
+  .question-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+  
+  .option {
+    padding: 1rem;
+    font-size: 0.85rem;
+    margin: 0.3rem 0;
+  }
+  
+  .glass-card {
+    padding: 1rem;
+    border-radius: 20px;
+  }
+  
+  /* 결과 페이지 반응형 */
+  .result-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .result-date {
+    font-size: 0.9rem;
+  }
+  
+  .result-header {
+    padding: 1.5rem 0;
+  }
+  
+  .tasks-title {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .task-text {
+    font-size: 0.85rem;
+  }
+  
+  .task-item {
+    padding: 0.75rem;
+  }
+  
+  .action-row {
+    gap: 0.75rem;
+  }
+  
+  .action-row .btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  /* 음악 추천 반응형 */
+  .music-recommendation {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .music-header {
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .music-cover {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .music-emoji {
+    font-size: 1.5rem;
+  }
+  
+  .music-title {
+    font-size: 1rem;
+  }
+  
+  .music-description {
+    font-size: 0.85rem;
+  }
+  
+  .track-item {
+    padding: 0.6rem;
+  }
+  
+  .track-name {
+    font-size: 0.85rem;
+  }
+  
+  .track-artist {
+    font-size: 0.75rem;
+  }
+  
+  /* 감성 문구 반응형 */
+  .inspirational-quote {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .quote-header h3 {
+    font-size: 1rem;
+  }
+  
+  .quote-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  /* 캘린더 반응형 */
+  .calendar-container {
+    padding: 1rem;
+  }
+  
+  .calendar-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    gap: 0;
+    margin-bottom: 1.5rem;
+  }
+  
+  .calendar-header .btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #1a202c;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .calendar-header .btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .calendar-title {
+    font-size: 1.3rem;
+    margin: 0;
+  }
+  
+  .calendar-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .month-title {
+    font-size: 1.3rem;
+  }
+  
+  .nav-button {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .weekday-cell {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .calendar-day {
+    font-size: 0.9rem;
+  }
+  
+  .entry-title {
+    font-size: 0.9rem;
+  }
+  
+  .empty-title {
+    font-size: 1.1rem;
+  }
+  
+  .empty-message {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.4rem;
+  }
+  
+  .question-title {
+    font-size: 1.1rem;
+  }
+  
+  .result-title {
+    font-size: 1.4rem;
+  }
+  
+  .glass-card {
+    padding: 0.875rem;
+    border-radius: 16px;
+  }
+  
+  .btn {
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .option {
+    padding: 0.875rem;
+    font-size: 0.8rem;
+  }
+  
+  .action-row {
+    gap: 0.5rem;
+  }
+  
+  .action-row .btn {
+    padding: 0.7rem 0.875rem;
+    font-size: 0.75rem;
+  }
+  
+  .music-recommendation,
+  .inspirational-quote {
+    padding: 1.25rem;
+  }
+  
+  .music-cover {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .music-emoji {
+    font-size: 1.25rem;
+  }
+  
+  .track-item {
+    padding: 0.5rem;
+  }
+  
+  .calendar-container {
+    padding: 0.75rem;
+  }
+  
+  .calendar-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar-header .btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #1a202c;
+    font-weight: 600;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .calendar-header .btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .calendar-title {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+  
+  .weekday-cell {
+    padding: 0.4rem;
+    font-size: 0.75rem;
+  }
+  
+  .calendar-day {
+    font-size: 0.8rem;
+  }
+}
