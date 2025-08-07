@@ -287,27 +287,47 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
         // 이미지 다운로드 - 모바일에서 갤러리로 바로 저장
         const imageUrl = canvas.toDataURL('image/png', 1.0);
         
-        // Blob URL로 변환 (모바일에서 더 잘 작동)
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const blobUrl = URL.createObjectURL(blob);
+        // dataURL을 File 객체로 변환
+        const arr = imageUrl.split(',');
+        const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
+        const bstr = window.atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
         
-        const link = document.createElement('a');
-        link.download = `오늘의_기분_${result.date}.png`;
-        link.href = blobUrl;
-        link.style.display = 'none';
-        
-        // 모바일에서 갤러리 저장을 위한 추가 설정
-        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-          link.setAttribute('target', '_blank');
-          link.setAttribute('rel', 'noopener noreferrer');
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
         }
         
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const file = new File([u8arr], `오늘의_기분_${result.date}.png`, { type: mime });
+        const blobUrl = URL.createObjectURL(file);
         
-        // 메모리 정리
+        // 모바일/데스크톱 분기 처리
+        if (/Android/i.test(navigator.userAgent)) {
+          // Android: 바로 다운로드
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = file.name;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          // iOS: 새 탭에서 열기
+          const newWindow = window.open(blobUrl, '_blank');
+          if (newWindow) {
+            newWindow.focus();
+          }
+        } else {
+          // 데스크톱: 일반 다운로드
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = file.name;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+        
         setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
       } catch (error) {
         console.error('이미지 저장 실패:', error);
