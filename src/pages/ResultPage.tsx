@@ -305,21 +305,80 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
         const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
         if (isMobile) {
-          // 모바일: Web Share API 시도
+          // 모바일: Web Share API 시도 (모든 모바일에서)
           if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({
                 title: '오늘의 기분 결과',
                 files: [file]
               });
-            } catch (error) {
-              console.log('Web Share API 실패, 새 탭으로 열기:', error);
-              // Web Share API 실패시 새 탭에서 열기
-              window.open(blobUrl, '_blank');
+            } catch {
+              // Web Share API 실패시 모달로 표시
+              showImageModal();
             }
           } else {
-            // Web Share API 미지원시 새 탭에서 열기
-            window.open(blobUrl, '_blank');
+            // Web Share API 미지원시 모달로 표시
+            showImageModal();
+          }
+          
+          function showImageModal() {
+            const imgElement = document.createElement('img');
+            imgElement.src = blobUrl;
+            imgElement.style.cssText = `
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 95vw;
+              height: 95vh;
+              object-fit: contain;
+              z-index: 9999;
+              border-radius: 12px;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+              background: white;
+            `;
+            
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100vw;
+              height: 100vh;
+              background: rgba(0,0,0,0.9);
+              z-index: 9998;
+            `;
+            
+            const closeButton = document.createElement('button');
+            closeButton.textContent = '✕';
+            closeButton.style.cssText = `
+              position: fixed;
+              top: 10px;
+              right: 10px;
+              background: rgba(255,255,255,0.9);
+              border: none;
+              border-radius: 50%;
+              width: 50px;
+              height: 50px;
+              font-size: 24px;
+              z-index: 10000;
+              cursor: pointer;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            `;
+            
+            const closeModal = () => {
+              document.body.removeChild(overlay);
+              document.body.removeChild(imgElement);
+              document.body.removeChild(closeButton);
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+            };
+            
+            overlay.onclick = closeModal;
+            closeButton.onclick = closeModal;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(imgElement);
+            document.body.appendChild(closeButton);
           }
         } else {
           // 데스크톱: 일반 다운로드
