@@ -322,14 +322,56 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
           }
           
           function showImageModal() {
-            // blob을 data URL로 변환
+            // 화면에 꽉 차는 모달
             const reader = new FileReader();
             reader.onload = function(e) {
               const dataUrl = e.target?.result as string;
-              window.location.href = dataUrl;
+              
+              const imgElement = document.createElement('img');
+              imgElement.src = dataUrl;
+              imgElement.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                object-fit: contain;
+                z-index: 9999;
+                background: white;
+              `;
+              
+              const closeButton = document.createElement('button');
+              closeButton.textContent = '✕';
+              closeButton.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                background: rgba(255,255,255,0.9);
+                border: none;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                font-size: 20px;
+                color: black;
+                z-index: 10000;
+                cursor: pointer;
+              `;
+              
+              const closeModal = () => {
+                document.body.removeChild(imgElement);
+                document.body.removeChild(closeButton);
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+              };
+              
+              closeButton.onclick = closeModal;
+              
+              document.body.appendChild(imgElement);
+              document.body.appendChild(closeButton);
             };
             reader.readAsDataURL(file);
           }
+          
+
         } else {
           // 데스크톱: 일반 다운로드
           const link = document.createElement('a');
