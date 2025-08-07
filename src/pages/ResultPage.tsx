@@ -337,7 +337,6 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
                 height: 100vh;
                 object-fit: contain;
                 z-index: 9999;
-                background: white;
               `;
               
               const closeButton = document.createElement('button');
@@ -349,12 +348,16 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
                 background: rgba(255,255,255,0.9);
                 border: none;
                 border-radius: 50%;
-                width: 30px;
-                height: 30px;
+                width: 25px;
+                height: 25px;
                 font-size: 20px;
                 color: black;
                 z-index: 10000;
                 cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 1;
               `;
               
               const closeModal = () => {
