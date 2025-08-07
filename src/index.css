@@ -50,18 +50,10 @@ body {
   overflow: hidden;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-}
-
 .btn-secondary {
   background: rgba(255, 255, 255, 0.9);
   color: #1a202c;
   border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.btn-secondary:hover {
-  transform: translateY(-2px);
 }
 
 .btn:disabled {
