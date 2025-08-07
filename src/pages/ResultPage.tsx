@@ -348,9 +348,9 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
                 background: rgba(255,255,255,0.9);
                 border: none;
                 border-radius: 50%;
-                width: 25px;
-                height: 25px;
-                font-size: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 22px;
                 color: black;
                 z-index: 10000;
                 cursor: pointer;
