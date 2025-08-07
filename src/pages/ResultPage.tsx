@@ -18,6 +18,8 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
   const { result, addMoodEntry } = useMoodStore();
   const quoteRef = useRef<InspirationalQuoteRef>(null);
 
+
+
   useEffect(() => {
     if (result) {
       const entry: MoodEntry = {
@@ -284,12 +286,38 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
 
         // 이미지 다운로드
         const imageUrl = canvas.toDataURL('image/png', 1.0);
-        const link = document.createElement('a');
-        link.download = `오늘의_기분_${result.date}.png`;
-        link.href = imageUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        
+        // 모바일에서는 Web Share API 사용 (갤러리로 바로 저장)
+        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && navigator.share) {
+          try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const file = new File([blob], `오늘의_기분_${result.date}.png`, { type: 'image/png' });
+            
+            await navigator.share({
+              title: '오늘의 기분 결과',
+              text: '나의 오늘 기분을 확인해보세요!',
+              files: [file]
+            });
+          } catch (error) {
+            console.log('공유 실패, 일반 다운로드로 대체:', error);
+            // 실패시 일반 다운로드
+            const link = document.createElement('a');
+            link.download = `오늘의_기분_${result.date}.png`;
+            link.href = imageUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        } else {
+          // 데스크톱에서는 일반 다운로드
+          const link = document.createElement('a');
+          link.download = `오늘의_기분_${result.date}.png`;
+          link.href = imageUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
       } catch (error) {
         console.error('이미지 저장 실패:', error);
       }
