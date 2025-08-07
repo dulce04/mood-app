@@ -302,20 +302,22 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
         const blobUrl = URL.createObjectURL(file);
         
         // 모바일/데스크톱 분기 처리
-        if (/Android/i.test(navigator.userAgent)) {
-          // Android: 바로 다운로드
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.download = file.name;
-          link.style.display = 'none';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-          // iOS: 새 탭에서 열기
+        const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+          // 모바일: 새 탭에서 열기 (사용자가 수동으로 저장)
           const newWindow = window.open(blobUrl, '_blank');
           if (newWindow) {
             newWindow.focus();
+          } else {
+            // 팝업이 차단된 경우 일반 다운로드
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = file.name;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
           }
         } else {
           // 데스크톱: 일반 다운로드

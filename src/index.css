@@ -369,13 +369,6 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.calendar-day.today {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-weight: 700;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
 .calendar-day.other-month {
   color: #cbd5e1;
   background: rgba(255, 255, 255, 0.3);
@@ -816,11 +809,11 @@ body {
   }
   
   .empty-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .empty-message {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }
 

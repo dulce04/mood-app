@@ -79,17 +79,13 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
             📅 기분 캘린더
           </h1>
           
-          {moodHistory.length > 0 && (
-            <Button onClick={handleClearHistory} variant="secondary">
-              <Trash2 size={16} />
-            </Button>
-          )}
+          <Button onClick={handleClearHistory} variant="secondary">
+            <Trash2 size={16} />
+          </Button>
         </div>
 
         <div className={selectedEntry ? 'calendar-layout' : 'calendar-layout-single'}>
-          {/* 캘린더 */}
           <div className="glass-card">
-            {/* 월 네비게이션 */}
             <div className="month-navigation">
               <button
                 onClick={() => navigateMonth('prev')}
@@ -143,7 +139,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
           </div>
 
           {/* 선택된 날짜 정보 */}
-          {selectedEntry && (
+          {selectedEntry && moodHistory.length > 0 && (
             <div className="glass-card">
               <div className="entry-header">
                 <h3 className="entry-title">
