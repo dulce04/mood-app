@@ -625,7 +625,7 @@ body {
   
   .question-title {
     font-size: 1.2rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.8rem;
     line-height: 1.3;
   }
   
@@ -815,7 +815,7 @@ body {
   }
   
   .question-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .result-title {
