@@ -309,7 +309,7 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
           if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({
-                title: '오늘의 기분 결과',
+                title: '나의 오늘 기분은?',
                 files: [file]
               });
             } catch {
