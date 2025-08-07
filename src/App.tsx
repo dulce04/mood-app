@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { HomePage } from './pages/HomePage';
 import { ResultPage } from './pages/ResultPage';
 import { CalendarPage } from './pages/CalendarPage';
@@ -44,6 +45,8 @@ function App() {
       {currentPage === 'calendar' && (
         <CalendarPage onBack={handleBackFromCalendar} />
       )}
+      
+      <Analytics />
     </div>
   );
 }
