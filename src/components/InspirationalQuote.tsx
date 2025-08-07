@@ -1,4 +1,4 @@
-import React, { useState, useImperativeHandle, forwardRef } from 'react';
+import { useState, useImperativeHandle, forwardRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { getRandomQuoteByMood } from '../utils/moodData';
 import type { InspirationalQuote, MoodType } from '../types';
