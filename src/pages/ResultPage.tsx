@@ -284,40 +284,31 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
         // DOM에서 제거
         document.body.removeChild(storyContainer);
 
-        // 이미지 다운로드
+        // 이미지 다운로드 - 모바일에서 갤러리로 바로 저장
         const imageUrl = canvas.toDataURL('image/png', 1.0);
         
-        // 모바일에서는 Web Share API 사용 (갤러리로 바로 저장)
-        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && navigator.share) {
-          try {
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
-            const file = new File([blob], `오늘의_기분_${result.date}.png`, { type: 'image/png' });
-            
-            await navigator.share({
-              title: '오늘의 기분 결과',
-              text: '나의 오늘 기분을 확인해보세요!',
-              files: [file]
-            });
-          } catch (error) {
-            console.log('공유 실패, 일반 다운로드로 대체:', error);
-            // 실패시 일반 다운로드
-            const link = document.createElement('a');
-            link.download = `오늘의_기분_${result.date}.png`;
-            link.href = imageUrl;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
-        } else {
-          // 데스크톱에서는 일반 다운로드
-          const link = document.createElement('a');
-          link.download = `오늘의_기분_${result.date}.png`;
-          link.href = imageUrl;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+        // Blob URL로 변환 (모바일에서 더 잘 작동)
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.download = `오늘의_기분_${result.date}.png`;
+        link.href = blobUrl;
+        link.style.display = 'none';
+        
+        // 모바일에서 갤러리 저장을 위한 추가 설정
+        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
         }
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // 메모리 정리
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
       } catch (error) {
         console.error('이미지 저장 실패:', error);
       }
