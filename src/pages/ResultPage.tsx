@@ -15,13 +15,17 @@ interface ResultPageProps {
 }
 
 export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalendar }) => {
-  const { result, addMoodEntry } = useMoodStore();
+  const { result, addMoodEntry, moodHistory } = useMoodStore();
   const quoteRef = useRef<InspirationalQuoteRef>(null);
+  const hasSavedRef = useRef<boolean>(false);
 
 
 
   useEffect(() => {
-    if (result) {
+    if (!result || hasSavedRef.current) return;
+
+    const alreadyExists = moodHistory.some(e => e.date === result.date);
+    if (!alreadyExists) {
       const entry: MoodEntry = {
         id: Date.now().toString(),
         date: result.date,
@@ -29,8 +33,10 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
       };
       addMoodEntry(entry);
     }
+
+    hasSavedRef.current = true;
     initKakao();
-  }, [result, addMoodEntry]);
+  }, [result, moodHistory, addMoodEntry]);
 
   if (!result) {
     return (
@@ -305,19 +311,8 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
         const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
         if (isMobile) {
-          // 모바일: Web Share API 시도 (모든 모바일에서)
-          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-              await navigator.share({
-                title: '나의 오늘 기분은?',
-                files: [file]
-              });
-            } catch {
-              showImageModal();
-            }
-          } else {
-            showImageModal();
-          }
+          // 모바일: 항상 모달로 표시
+          showImageModal();
           
           function showImageModal() {
             // 화면에 꽉 차는 모달

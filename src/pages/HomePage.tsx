@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { QuestionCard } from '../components/QuestionCard';
 import { ProgressBar } from '../components/ProgressBar';
 import { useMoodStore } from '../store/moodStore';
@@ -21,33 +21,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onComplete }) => {
 
   const currentQuestion = useMemo(() => getQuestionById(currentQuestionId) ?? getQuizQuestions()[currentQuestionIndex], [currentQuestionId, currentQuestionIndex]);
   const totalPlanned = useMemo(() => currentQuestionIndex + getLongestPathLenFrom(currentQuestionId), [currentQuestionIndex, currentQuestionId]);
-  const [selectedOption, setSelectedOption] = useState<QuestionOption | undefined>(
-    answers.find(a => a.questionId === currentQuestion?.id)?.selectedOption
-  );
+  const selectedOption = useMemo(() => {
+    return answers.find(a => a.questionId === currentQuestion?.id)?.selectedOption;
+  }, [answers, currentQuestion?.id]);
 
-  useEffect(() => {
-    const existingAnswer = answers.find(a => a.questionId === currentQuestion?.id);
-    setSelectedOption(existingAnswer?.selectedOption);
-  }, [currentQuestionIndex, answers, currentQuestion]);
+  const handleOptionSelect = useCallback((option: QuestionOption) => {
+    if (!currentQuestion) return;
 
-  const handleOptionSelect = (option: QuestionOption) => {
-    setSelectedOption(option);
-    if (currentQuestion) {
-      addAnswer({
-        questionId: currentQuestion.id,
-        selectedOption: option
-      });
-      
-      const nextId = option.nextId;
-      if (!nextId) {
-        const result = generateMoodResult([...answers, { questionId: currentQuestion.id, selectedOption: option }]);
-        setResult(result);
-        onComplete();
-      } else {
-        nextQuestion(nextId);
-      }
+    addAnswer({
+      questionId: currentQuestion.id,
+      selectedOption: option
+    });
+
+    const nextId = option.nextId;
+    if (!nextId) {
+      const result = generateMoodResult([...answers, { questionId: currentQuestion.id, selectedOption: option }]);
+      setResult(result);
+      onComplete();
+    } else {
+      nextQuestion(nextId);
     }
-  };
+  }, [currentQuestion, addAnswer, answers, setResult, onComplete, nextQuestion]);
 
   if (!currentQuestion) {
     return null;
