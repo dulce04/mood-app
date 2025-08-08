@@ -3,7 +3,6 @@ import React from 'react';
 interface ProgressBarProps {
   completed: number; 
   total: number;
-  labelCurrent?: number; 
 }
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({ completed, total }) => {
