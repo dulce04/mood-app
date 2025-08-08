@@ -6,7 +6,7 @@ interface ProgressBarProps {
   labelCurrent?: number; 
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ completed, total, labelCurrent }) => {
+export const ProgressBar: React.FC<ProgressBarProps> = ({ completed, total }) => {
   const safeCompleted = Math.min(Math.max(completed, 0), total);
   const progress = total > 0 ? (safeCompleted / total) * 100 : 0;
 
