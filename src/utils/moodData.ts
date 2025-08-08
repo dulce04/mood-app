@@ -87,8 +87,8 @@ const moodSelfCare = {
 // ===== 기분별 문구 데이터 =====
 const moodQuotes: InspirationalQuote[] = [
   // joy (기쁨)
-  { id: 'joy-1', text: '오늘의 작은 기쁨들을 놓치지 말자. 그것들이 하루를 빛나게 해.', mood: 'joy' },
-  { id: 'joy-2', text: '웃음은 전염돼. 네가 먼저 웃으면 세상도 따라와.', mood: 'joy' },
+  { id: 'joy-1', text: '오늘의 작은 기쁨들을 놓치지 말자.\n그것들이 하루를 빛나게 해.', mood: 'joy' },
+  { id: 'joy-2', text: '웃음은 전염돼.\n네가 먼저 웃으면 세상도 따라와.', mood: 'joy' },
   { id: 'joy-3', text: '행복은 거창하지 않아. 지금 여기에서 시작돼.', mood: 'joy' },
   { id: 'joy-4', text: '행복한 일만 가득해져서 쉴 틈없이,\n빈틈도 없이 우울하지 않게,\n불안하지도 않게 하루 종일 행복할 수 있게.', mood: 'joy' },
   { id: 'joy-5', text: '내가 좋아하는 사람들이 행복만 가득했으면 좋겠어.\n내가 싫어하는 사람은 내 알 바 아니고!', mood: 'joy' },
@@ -98,27 +98,27 @@ const moodQuotes: InspirationalQuote[] = [
   { id: 'pride-9', text: '있잖아, 행복은\n내가 좋아하는 사람들, 내가 사랑하는 가족들과\n잔뜩 낭비하는 시간에 있는 거 같아.', mood: 'pride' },
 
   // sadness (슬픔)
-  { id: 'sadness-1', text: '울어도 괜찮아. 그 다음엔 조금 가벼워질 거야.', mood: 'sadness' },
+  { id: 'sadness-1', text: '울어도 괜찮아.\n그 다음엔 조금 가벼워질 거야.', mood: 'sadness' },
   { id: 'sadness-2', text: '천천히 괜찮아질 거야. 네 속도로 가자.', mood: 'sadness' },
   { id: 'sadness-3', text: '오늘은 그냥 조용히 있어도 돼.', mood: 'sadness' },
   { id: 'sadness-4', text: '오늘은 느리게 걸어가자. 발걸음에 맞춰 호흡하기.', mood: 'sadness' },
 
   // depression (우울함)
-  { id: 'depression-1', text: '우리는 완벽할 수 없고 완벽할 필요도 없어. 너는 너 그대로일 때가 가장 아름다워.', mood: 'depression' },
-  { id: 'depression-2', text: '요즘은 싫은 사람을 애써 참지 않아. 적절한 순간에 적절한 사람들과.', mood: 'depression' },
-  { id: 'depression-3', text: '마음을 비우고 가볍게 생각하자. 오늘만은.', mood: 'depression' },
-  { id: 'depression-4', text: '몸을 상하게 하면서까지 해낼 일도, 마음을 아프게 하면서 지킬 관계도 없어.', mood: 'depression' },
+  { id: 'depression-1', text: '우리는 완벽할 수 없고 완벽할 필요도 없어.\n너는 너 그대로일 때가 가장 아름다워.', mood: 'depression' },
+  { id: 'depression-2', text: '요즘은 싫은 사람을 애써 참지 않아.\n적절한 순간에 적절한 사람들과.', mood: 'depression' },
+  { id: 'depression-3', text: '마음을 비우고 가볍게 생각하자.오늘만은.', mood: 'depression' },
+  { id: 'depression-4', text: '몸을 상하게 하면서까지 해낼 일도,\n마음을 아프게 하면서 지킬 관계도 없어.', mood: 'depression' },
 
   // stressed (스트레스)
-  { id: 'stressed-1', text: '할 일을 쪼개면 마음도 가벼워져. 하나씩만 해보자.', mood: 'stressed' },
+  { id: 'stressed-1', text: '할 일을 쪼개면 마음도 가벼워져.하나씩만 해보자.', mood: 'stressed' },
   { id: 'stressed-2', text: '완벽보다 완수. 오늘은 70%면 충분해.', mood: 'stressed' },
   { id: 'stressed-3', text: '숨 고르고 다시 시작해도 충분해.', mood: 'stressed' },
 
   // calm (편안함)
-  { id: 'calm-1', text: '요즘은 싫은 사람을 애써 참지 않고 우정에 큰 의미를 두지 않으려 해.', mood: 'calm' },
+  { id: 'calm-1', text: '요즘은 싫은 사람을 애써 참지 않고\n우정에 큰 의미를 두지 않으려 해.', mood: 'calm' },
   { id: 'calm-2', text: '단단함보다 유연함. 흔들려도 부러지지 않기.', mood: 'calm' },
   { id: 'calm-3', text: '물 흐르듯 자연스럽게, 그저 나답게.', mood: 'calm' },
-  { id: 'calm-4', text: '마음을 비우고 가볍게 생각하기. 불편함은 흘려보내기.', mood: 'calm' },
+  { id: 'calm-4', text: '마음을 비우고 가볍게 생각하기.불편함은 흘려보내기.', mood: 'calm' },
   { id: 'calm-5', text: '우리는 완벽할 필요 없어. 있는 그대로도 충분해.', mood: 'calm' },
   { id: 'calm-6', text: '애쓰지 않아도 편안할 수 있는 하루.', mood: 'calm' },
   { id: 'calm-7', text: '내 몸을 상하게 하면서까지 해낼 일은 없어.', mood: 'calm' },
@@ -127,7 +127,7 @@ const moodQuotes: InspirationalQuote[] = [
   { id: 'calm-10', text: '가볍게 생각하고 부드럽게 지나가기.', mood: 'calm' },
 
   // pride (뿌듯함/자부심)
-  { id: 'pride-1', text: '난 이 세상에 잘 살려고 왔지. 오래 살기만 하려고 온 게 아니야.', mood: 'pride' },
+  { id: 'pride-1', text: '난 이 세상에 잘 살려고 왔지.\n오래 살기만 하려고 온 게 아니야.', mood: 'pride' },
   { id: 'pride-2', text: '모든 파도를 잡지 말고, 정말 중요한 내 파도를 잡자.', mood: 'pride' },
   { id: 'pride-3', text: '나를 의심하게 하는 곳보다 나를 믿게 하는 곳으로.', mood: 'pride' },
   { id: 'pride-4', text: '완벽보다 나다움. 그게 제일 보기 좋아.', mood: 'pride' },
@@ -142,8 +142,8 @@ const moodQuotes: InspirationalQuote[] = [
   { id: 'boredom-3', text: '작은 호기심이 하루를 바꾼다.', mood: 'boredom' },
 
   // tired (피곤함)
-  { id: 'tired-1', text: '잠깐 쉬는 게 멈추는 게 아니야. 더 멀리 가기 위한 숨 고르기야.', mood: 'tired' },
-  { id: 'tired-2', text: '몸이 보내는 신호에 귀 기울이자. 오늘은 천천히 가도 괜찮아.', mood: 'tired' },
+  { id: 'tired-1', text: '잠깐 쉬는 게 멈추는 게 아니야.\n더 멀리 가기 위한 숨 고르기야.', mood: 'tired' },
+  { id: 'tired-2', text: '몸이 보내는 신호에 귀 기울이자.\n오늘은 천천히 가도 괜찮아.', mood: 'tired' },
   { id: 'tired-3', text: '쉬어야 다시 달릴 수 있어.', mood: 'tired' },
 
   // fear (두려움)
