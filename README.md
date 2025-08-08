@@ -17,8 +17,6 @@
 - **React 18+** - 컴포넌트 기반 UI 개발
 - **TypeScript** - 타입 안정성 및 개발 효율성
 - **Tailwind CSS** - 유틸리티 우선 스타일링
-- **Framer Motion** - 애니메이션 및 인터랙션
-- **Zustand** - 가벼운 상태 관리
 - **Lucide React** - 아이콘 라이브러리
 
 ### Build & Development
