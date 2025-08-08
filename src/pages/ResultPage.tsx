@@ -313,11 +313,9 @@ export const ResultPage: React.FC<ResultPageProps> = ({ onRestart, onShowCalenda
                 files: [file]
               });
             } catch {
-              // Web Share API 실패시 모달로 표시
               showImageModal();
             }
           } else {
-            // Web Share API 미지원시 모달로 표시
             showImageModal();
           }
           

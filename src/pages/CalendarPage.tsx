@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '../components/Button';
 import { useMoodStore } from '../store/moodStore';
@@ -11,60 +11,74 @@ interface CalendarPageProps {
 
 export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
   const { moodHistory, clearHistory } = useMoodStore();
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedEntry, setSelectedEntry] = useState<MoodEntry | null>(null);
 
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-  
-  const startDate = new Date(firstDayOfMonth);
-  startDate.setDate(startDate.getDate() - firstDayOfMonth.getDay());
+  const monthRange = useMemo(() => {
+    const first = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const last = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    return { first, last };
+  }, [currentDate]);
 
-  const endDate = new Date(lastDayOfMonth);
-  endDate.setDate(endDate.getDate() + (6 - lastDayOfMonth.getDay()));
+  const gridRange = useMemo(() => {
+    const start = new Date(monthRange.first);
+    start.setDate(start.getDate() - monthRange.first.getDay());
+    const end = new Date(monthRange.last);
+    end.setDate(end.getDate() + (6 - monthRange.last.getDay()));
+    return { start, end };
+  }, [monthRange]);
 
-  const calendarDays: Date[] = [];
-  const current = new Date(startDate);
-  while (current <= endDate) {
-    calendarDays.push(new Date(current));
-    current.setDate(current.getDate() + 1);
-  }
+  const calendarDays = useMemo<Date[]>(() => { 
+    const days: Date[] = [];
+    const iter = new Date(gridRange.start);
+    while (iter <= gridRange.end) {
+      days.push(new Date(iter));
+      iter.setDate(iter.getDate() + 1);
+    }
+    return days;
+  }, [gridRange]);
 
-  const getMoodEntryForDate = (date: Date): MoodEntry | undefined => {
-    const dateString = dateToYYYYMMDD(date);
-    return moodHistory.find(entry => entry.date === dateString);
-  };
+  const moodEntryByDate = useMemo<Record<string, MoodEntry>>(() => {
+    return moodHistory.reduce<Record<string, MoodEntry>>((map, entry) => {
+      map[entry.date] = entry;
+      return map;
+    }, {});
+  }, [moodHistory]);
 
-  const navigateMonth = (direction: 'prev' | 'next') => {
-    setCurrentDate(prev => {
-      const newDate = new Date(prev);
-      if (direction === 'prev') {
-        newDate.setMonth(newDate.getMonth() - 1);
-      } else {
-        newDate.setMonth(newDate.getMonth() + 1);
-      }
-      return newDate;
+  const getMoodEntryForDate = useCallback((date: Date): MoodEntry | undefined => {
+    return moodEntryByDate[dateToYYYYMMDD(date)];
+  }, [moodEntryByDate]);
+
+  const navigateMonth = useCallback((direction: 'prev' | 'next') => {
+    setCurrentDate(previousDate => {
+      const nextDate = new Date(previousDate);
+      nextDate.setMonth(nextDate.getMonth() + (direction === 'prev' ? -1 : 1));
+      return nextDate;
     });
-  };
+  }, []);
 
-  const formatMonthYear = (date: Date) => {
+  const formatMonthYear = useCallback((date: Date) => {
     return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long' });
-  };
+  }, []);
 
-  const isToday = (date: Date) => {
+  const isToday = useCallback((date: Date) => {
     const today = new Date();
     return date.toDateString() === today.toDateString();
-  };
+  }, []);
 
-  const isCurrentMonth = (date: Date) => {
+  const isCurrentMonth = useCallback((date: Date) => {
     return date.getMonth() === currentDate.getMonth();
-  };
+  }, [currentDate]);
 
-  const handleClearHistory = () => {
+  const handleClearHistory = useCallback(() => {
     if (window.confirm('모든 기분 기록을 삭제하시겠습니까?')) {
       clearHistory();
     }
-  };
+  }, [clearHistory]);
+
+  const handleSelectDate = useCallback((entry?: MoodEntry) => {
+    if (entry) setSelectedEntry(entry);
+  }, []);
 
   return (
     <div className="calendar-container">
@@ -90,6 +104,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
               <button
                 onClick={() => navigateMonth('prev')}
                 className="btn btn-secondary nav-button"
+                aria-label="이전 달"
               >
                 <ChevronLeft size={20} />
               </button>
@@ -101,6 +116,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
               <button
                 onClick={() => navigateMonth('next')}
                 className="btn btn-secondary nav-button"
+                aria-label="다음 달"
               >
                 <ChevronRight size={20} />
               </button>
@@ -125,11 +141,10 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
                 return (
                   <button
                     key={index}
-                    onClick={() => moodEntry && setSelectedEntry(moodEntry)}
+                    onClick={() => handleSelectDate(moodEntry)}
                     className={`calendar-day ${isTodayDate ? 'today' : ''} ${!isCurrentMonthDate ? 'other-month' : ''} ${moodEntry ? 'has-mood' : ''}`}
-                    style={{
-                      background: moodEntry ? moodEntry.result.gradient : undefined
-                    }}
+                    style={{ background: moodEntry ? moodEntry.result.gradient : undefined }}
+                    aria-label={`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${moodEntry ? '기록 있음' : '기록 없음'}`}
                   >
                     {date.getDate()}
                   </button>
@@ -152,6 +167,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({ onBack }) => {
                 <button
                   onClick={() => setSelectedEntry(null)}
                   className="close-button"
+                  aria-label="선택 닫기"
                 >
                   ✕
                 </button>

@@ -9,9 +9,19 @@ export interface QuestionOption {
   text: string;
   value: number;
   mood: MoodType;
+  nextId?: number;
 }
 
-export type MoodType = 'calm' | 'happy' | 'energetic' | 'peaceful' | 'creative' | 'melancholy';
+export type MoodType =
+  | 'joy'        // 기쁨
+  | 'sadness'    // 슬픔
+  | 'depression' // 우울함
+  | 'stressed'   // 스트레스
+  | 'calm'       // 편안함
+  | 'pride'      // 뿌듯함
+  | 'boredom'    // 지루함
+  | 'tired'      // 피곤함
+  | 'fear';      // 두려움
 
 export interface MoodResult {
   primaryMood: MoodType;

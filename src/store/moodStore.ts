@@ -1,16 +1,18 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Answer, MoodResult, MoodEntry } from '../types';
+import { getFirstQuestionId } from '../utils/moodData';
 
 interface MoodState {
   answers: Answer[];
   currentQuestionIndex: number;
+  currentQuestionId: number;
   result: MoodResult | null;
   moodHistory: MoodEntry[];
   
   // Actions
   addAnswer: (answer: Answer) => void;
-  nextQuestion: () => void;
+  nextQuestion: (nextId: number) => void;
   resetQuiz: () => void;
   setResult: (result: MoodResult) => void;
   addMoodEntry: (entry: MoodEntry) => void;
@@ -22,6 +24,7 @@ export const useMoodStore = create<MoodState>()(
     (set) => ({
       answers: [],
       currentQuestionIndex: 0,
+      currentQuestionId: getFirstQuestionId(),
       result: null,
       moodHistory: [],
 
@@ -31,9 +34,10 @@ export const useMoodStore = create<MoodState>()(
         }));
       },
 
-      nextQuestion: () => {
+      nextQuestion: (nextId) => {
         set((state) => ({
-          currentQuestionIndex: state.currentQuestionIndex + 1
+          currentQuestionIndex: state.currentQuestionIndex + 1,
+          currentQuestionId: nextId,
         }));
       },
 
@@ -41,6 +45,7 @@ export const useMoodStore = create<MoodState>()(
         set({
           answers: [],
           currentQuestionIndex: 0,
+          currentQuestionId: getFirstQuestionId(),
           result: null
         });
       },

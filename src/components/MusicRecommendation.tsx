@@ -30,39 +30,48 @@ export const MusicRecommendation: React.FC<MusicRecommendationProps> = ({ mood }
   };
 
   const getMoodEmoji = (mood: MoodType) => {
-    const emojis = {
-      happy: '🎵',
+    const emojis: Record<MoodType, string> = {
+      joy: '🎉',
+      sadness: '🌧️',
+      depression: '🌫️',
+      stressed: '⚠️',
       calm: '🌙',
-      energetic: '⚡',
-      peaceful: '🌿',
-      creative: '🎨',
-      melancholy: '🌅'
+      pride: '🏆',
+      boredom: '😶',
+      tired: '😴',
+      fear: '😨'
     };
-    return emojis[mood] || '🎵';
+    return emojis[mood];
   };
 
   const getMoodTitle = (mood: MoodType) => {
-    const titles = {
-      happy: '신나는 하루 시작',
-      calm: '조용한 밤의 위로',
-      energetic: '에너지 충전 댄스',
-      peaceful: '자연의 평화',
-      creative: '창작의 영감',
-      melancholy: '감성에 젖는 새벽'
+    const titles: Record<MoodType, string> = {
+      joy: '신나는 하루 시작',
+      sadness: '마음 토닥이는 노래',
+      depression: '무기력한 날의 위로',
+      stressed: '긴장 풀어주는 사운드',
+      calm: '차분한 휴식',
+      pride: '자신감 충전 플레이리스트',
+      boredom: '심심함 달래기',
+      tired: '피곤함 내려놓기',
+      fear: '불안 잠재우는 멜로디'
     };
-    return titles[mood] || '기분에 맞는 음악';
+    return titles[mood];
   };
 
   const getMoodDescription = (mood: MoodType) => {
-    const descriptions = {
-      happy: '기분 좋은 하루를 위한 신나는 곡들',
-      calm: '마음을 차분하게 해주는 편안한 곡들',
-      energetic: '에너지를 불어넣는 활기찬 곡들',
-      peaceful: '마음을 평화롭게 해주는 힐링 곡들',
-      creative: '창의력을 자극하는 영감을 주는 곡들',
-      melancholy: '깊이 있는 감성을 담은 곡들'
+    const descriptions: Record<MoodType, string> = {
+      joy: '기분 좋은 하루를 위한 신나는 곡들',
+      sadness: '서글픈 마음을 다독이는 따뜻한 곡들',
+      depression: '가라앉은 마음을 붙잡아 주는 잔잔한 곡들',
+      stressed: '어깨를 가볍게 해주는 편안한 리듬',
+      calm: '마음을 차분하게 만드는 평온한 사운드',
+      pride: '뿌듯함을 더 오래 느끼게 하는 웅장한 곡들',
+      boredom: '호기심을 깨우는 색다른 플레이리스트',
+      tired: '지친 하루를 부드럽게 감싸는 곡들',
+      fear: '불안한 마음을 안정시키는 따뜻한 선율'
     };
-    return descriptions[mood] || '당신의 기분에 맞는 음악을 추천해드려요';
+    return descriptions[mood];
   };
 
   return (

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { QuestionCard } from '../components/QuestionCard';
 import { ProgressBar } from '../components/ProgressBar';
 import { useMoodStore } from '../store/moodStore';
-import { generateMoodResult, getQuizQuestions } from '../utils/moodData';
+import { generateMoodResult, getQuizQuestions, getQuestionById, getLongestPathLenFrom } from '../utils/moodData';
 import type { QuestionOption } from '../types';
 
 interface HomePageProps {
@@ -13,17 +13,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onComplete }) => {
   const { 
     answers, 
     currentQuestionIndex, 
+    currentQuestionId,
     addAnswer, 
     nextQuestion, 
     setResult 
   } = useMoodStore();
 
+  const currentQuestion = useMemo(() => getQuestionById(currentQuestionId) ?? getQuizQuestions()[currentQuestionIndex], [currentQuestionId, currentQuestionIndex]);
+  const totalPlanned = useMemo(() => currentQuestionIndex + getLongestPathLenFrom(currentQuestionId), [currentQuestionIndex, currentQuestionId]);
   const [selectedOption, setSelectedOption] = useState<QuestionOption | undefined>(
-    answers.find(a => a.questionId === getQuizQuestions()[currentQuestionIndex]?.id)?.selectedOption
+    answers.find(a => a.questionId === currentQuestion?.id)?.selectedOption
   );
-
-  const currentQuestion = getQuizQuestions()[currentQuestionIndex];
-  const isLastQuestion = currentQuestionIndex >= getQuizQuestions().length - 1;
 
   useEffect(() => {
     const existingAnswer = answers.find(a => a.questionId === currentQuestion?.id);
@@ -38,17 +38,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onComplete }) => {
         selectedOption: option
       });
       
-      if (isLastQuestion) {
-        const result = generateMoodResult(answers);
+      const nextId = option.nextId;
+      if (!nextId) {
+        const result = generateMoodResult([...answers, { questionId: currentQuestion.id, selectedOption: option }]);
         setResult(result);
         onComplete();
       } else {
-        nextQuestion();
+        nextQuestion(nextId);
       }
     }
   };
 
-  if (currentQuestionIndex >= getQuizQuestions().length) {
+  if (!currentQuestion) {
     return null;
   }
 
@@ -62,10 +63,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onComplete }) => {
         </div>
 
         {/* 프로그레스 바 */}
-        <ProgressBar 
-          current={currentQuestionIndex} 
-          total={getQuizQuestions().length} 
-        />
+        <ProgressBar completed={currentQuestionIndex} total={totalPlanned} />
 
         {/* 질문 카드 */}
         <QuestionCard

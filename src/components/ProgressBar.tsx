@@ -1,18 +1,17 @@
 import React from 'react';
 
 interface ProgressBarProps {
-  current: number;
+  completed: number; 
   total: number;
+  labelCurrent?: number; 
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ current, total }) => {
-  const progress = (current / total) * 100;
+export const ProgressBar: React.FC<ProgressBarProps> = ({ completed, total, labelCurrent }) => {
+  const safeCompleted = Math.min(Math.max(completed, 0), total);
+  const progress = total > 0 ? (safeCompleted / total) * 100 : 0;
 
   return (
     <div className="progress-container">
-      <div className="progress-info">
-        <span>질문 {current} / {total}</span>
-      </div>
       
       <div className="progress-bar">
         <div 
