@@ -208,7 +208,7 @@ const quizQuestions: Question[] = [
   },
   {
     id: 5,
-    text: '사람 만나는 마음은?',
+    text: '오늘 친구를 만나는 건 어때?',
     options: [
       { id: '5a', text: '지금 만나고 싶어', value: 3, mood: 'joy', nextId: 8 },
       { id: '5b', text: '가벼운 만남은 괜찮아', value: 3, mood: 'calm', nextId: 8 },
